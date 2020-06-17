@@ -1,0 +1,6 @@
+---
+- hosts: neergaard.dev
+  roles:
+    - radicale
+  tags:
+    - service

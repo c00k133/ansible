@@ -1,0 +1,33 @@
+---
+- name: Load variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "radicale.yml"
+  tags:
+    - always
+
+- name: Create Radicale image
+  docker_image:
+    name: "{{ image_name }}"
+    build:
+      path: "{{ docker_git }}"
+      dockerfile: "{{ dockerfile }}"
+    source: build
+
+- name: Create Radicale container
+  vars:
+    recreate_radicale_container: no
+  include: create-container.yml
+
+- name: Recreate Radicale container
+  vars:
+    recreate_radicale_container: yes
+  include: create-container.yml
+  tags:
+    - never
+    - recreate
+
+#- name: Gather container information
+#  docker_container_info:
+#    name: "{{ container_name }}"
+#  register: result

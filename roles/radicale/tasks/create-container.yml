@@ -1,0 +1,21 @@
+---
+- debug:
+    msg: Recreating Radicale container
+  when: recreate_radicale_container
+
+- name: Create Radicale docker container
+  docker_container:
+    recreate: "{{ recreate_radicale_container | default('no') }}"
+    name: "{{ container_name }}"
+    image: "{{ image_name }}"
+    state: started
+    ports: "{{ published_ports }}"
+    init: yes
+    capabilities: "{{ cap_adds }}"
+    cap_drop: "{{ cap_drops }}"
+    pids_limit: "{{ pids_limit }}"
+    memory: "{{ memory }}"
+    healthcheck: "{{ healthcheck }}"
+    volumes: "{{ volumes }}"
+    restart: yes
+    restart_policy: unless-stopped
