@@ -1,26 +1,33 @@
 ---
-image_name: docker-radicale
-container_name: radicale
-docker_git: https://github.com/c00k133/docker-radicale.git#master
-dockerfile: Dockerfile.extended
-published_ports:
+radicale_image_name: docker-radicale
+radicale_container_name: radicale
+
+radicale_repository: https://github.com/c00k133/docker-radicale.git#master
+radicale_dockerfile: Dockerfile.extended
+
+radicale_published_ports:
   - 127.0.0.1:5232:5232
-security_opts:
+radicale_security_opts:
   - "no-new-privileges:true"
-cap_drops:
+radicale_cap_drops:
   - ALL
-cap_adds:
+radicale_cap_adds:
   - CHOWN
   - SETUID
   - SETGID
   - KILL
-pids_limit: 50
-memory: 256M
-healthcheck:
+radicale_pids_limit: 50
+radicale_memory: 256M
+radicale_healthcheck:
   test: ["CMD", "curl", "--fail", "http://localhost:5232", "||", "exit", "1"]
   interval: 30s
   retries: 3
-volumes:
-  - /var/lib/radicale:/data
-  - /etc/radicale/config:/config:ro
-  - /var/log/docker/radicale:/var/log
+
+radicale_config:
+  data: /var/lib/radicale
+  config: /etc/radicale/config
+  log: /var/log/docker/radicale
+radicale_volumes: 
+  - "{{ radicale_config.data }}:/data"
+  - "{{ radicale_config.config }}:/config:ro"
+  - "{{ radicale_config.log }}:/var/log"

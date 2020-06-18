@@ -6,12 +6,30 @@
   tags:
     - always
 
+- name: Setup Radicale configuration
+  block:
+    - name: Create data folder
+      file:
+        path: "{{ radicale_config.data }}"
+        state: directory
+    - name: Copy config folder
+      copy:
+        src: files/config/
+        dest: "{{ radicale_config.config }}"
+        backup: yes
+        owner: root
+        group: root
+    - name: Create log folder
+      file:
+        path: "{{ radicale_config.log }}"
+        state: directory
+
 - name: Create Radicale image
   docker_image:
-    name: "{{ image_name }}"
+    name: "{{ radicale_image_name }}"
     build:
-      path: "{{ docker_git }}"
-      dockerfile: "{{ dockerfile }}"
+      path: "{{ radicale_repository }}"
+      dockerfile: "{{ radicale_dockerfile }}"
     source: build
 
 - name: Create Radicale container
@@ -26,8 +44,3 @@
   tags:
     - never
     - recreate
-
-#- name: Gather container information
-#  docker_container_info:
-#    name: "{{ container_name }}"
-#  register: result
