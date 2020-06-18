@@ -1,3 +1,4 @@
 ansible.cfg
 host_vars/
 hosts
+*.swp
