@@ -13,7 +13,7 @@
     init: yes
     capabilities: "{{ radicale_cap_adds }}"
     cap_drop: "{{ radicale_cap_drops }}"
-    pids_limit: "{{ radicale_pids_limit }}"
+    pids_limit: "{{ radicale_pids_limit }}"
     memory: "{{ radicale_memory }}"
     healthcheck: "{{ radicale_healthcheck }}"
     volumes: "{{ radicale_volumes }}"
