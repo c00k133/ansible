@@ -72,3 +72,6 @@
         restart: yes
         restart_policy: unless-stopped
         state: started
+    - name: Symlink inflcoud config.js in Docker container
+      shell: |
+        docker exec "{{ radicale_container_name }}" ln -f -s /config/infcloud/config.js /usr/lib/python3.7/site-packages/radicale_infcloud/web/config.js
