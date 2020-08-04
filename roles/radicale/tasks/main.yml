@@ -31,7 +31,10 @@
     build:
       path: "{{ radicale_repository }}"
       dockerfile: "{{ radicale_dockerfile }}"
+      pull: yes
     source: build
+    force_source: yes
+    state: present
 
 - name: Create Radicale Docker container
   block:
