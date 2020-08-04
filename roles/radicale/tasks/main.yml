@@ -25,11 +25,29 @@
         path: "{{ radicale_config.log }}"
         state: directory
 
+- name: Setup Radicale Docker configuration Git
+  become: yes
+  become_user: root
+  block:
+    - name: Setup bare git
+      git:
+        repo: "{{ radicale_repository }}"
+        dest: "{{ radicale_docker_destination }}"
+        separate_git_dir: "{{ radicale_docker_git_directory }}"
+        force: yes
+    - name: Set Git ownership
+      file:
+        path: "{{ radicale_docker_git_directory }}"
+        owner: "{{ radicale_docker_git_ownership.owner }}"
+        group: "{{ radicale_docker_git_ownership.group }}"
+        state: directory
+        recurse: yes
+
 - name: Create Radicale image
   docker_image:
     name: "{{ radicale_image_name }}"
     build:
-      path: "{{ radicale_repository }}"
+      path: "{{ radicale_docker_destination }}"
       dockerfile: "{{ radicale_dockerfile }}"
       pull: yes
     source: build

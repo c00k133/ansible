@@ -2,8 +2,14 @@
 radicale_image_name: docker-radicale
 radicale_container_name: radicale
 
-radicale_repository: https://github.com/c00k133/docker-radicale.git#master
+radicale_repository: https://github.com/c00k133/docker-radicale.git
 radicale_dockerfile: Dockerfile.extended
+
+radicale_docker_git_directory: /srv/git/docker-radicale.git
+radicale_docker_destination: /opt/docker-radicale
+radicale_docker_git_ownership:
+  owner: deploy
+  group: deploy
 
 radicale_published_ports:
   - 127.0.0.1:5232:5232
@@ -27,7 +33,7 @@ radicale_config:
   data: /var/lib/radicale
   config: /etc/radicale/config
   log: /var/log/docker/radicale
-radicale_volumes: 
+radicale_volumes:
   - "{{ radicale_config.data }}:/data"
   - "{{ radicale_config.config }}:/config:ro"
   - "{{ radicale_config.log }}:/var/log"
