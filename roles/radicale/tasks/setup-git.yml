@@ -1,0 +1,20 @@
+---
+- name: Setup bare git
+  git:
+    repo: "{{ radicale_repository }}"
+    dest: "{{ radicale_docker_destination }}"
+    separate_git_dir: "{{ radicale_docker_git_directory }}"
+    force: yes
+
+- name: Copy Git post-receive hook
+  template:
+    dest: "{{ radicale_docker_git_directory }}/hooks/post-receive"
+    src: templates/post-receive.j2
+
+- name: Set Git ownership
+  file:
+    path: "{{ radicale_docker_git_directory }}"
+    owner: "{{ radicale_docker_git_ownership.owner }}"
+    group: "{{ radicale_docker_git_ownership.group }}"
+    state: directory
+    recurse: yes

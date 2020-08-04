@@ -1,0 +1,19 @@
+---
+- name: Create data folder
+  file:
+    path: "{{ radicale_config.data }}"
+    state: directory
+
+- name: Copy config folder
+  become: true
+  copy:
+    dest: "{{ radicale_config.config }}"
+    src: files/config/
+    backup: yes
+    owner: root
+    group: root
+
+- name: Create log folder
+  file:
+    path: "{{ radicale_config.log }}"
+    state: directory

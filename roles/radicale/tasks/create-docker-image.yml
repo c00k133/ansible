@@ -1,0 +1,11 @@
+---
+- name: Create Radicale image
+  docker_image:
+    name: "{{ radicale_image_name }}"
+    build:
+      path: "{{ radicale_docker_destination }}"
+      dockerfile: "{{ radicale_dockerfile }}"
+      pull: yes
+    source: build
+    force_source: yes
+    state: present

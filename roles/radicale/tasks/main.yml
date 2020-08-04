@@ -1,81 +1,15 @@
 ---
-- name: Load variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "radicale.yml"
-  tags:
-    - always
+- import_tasks: include-vars.yml
 
 - name: Setup Radicale configuration
-  block:
-    - name: Create data folder
-      file:
-        path: "{{ radicale_config.data }}"
-        state: directory
-    - name: Copy config folder
-      become: true
-      copy:
-        dest: "{{ radicale_config.config }}"
-        src: files/config/
-        backup: yes
-        owner: root
-        group: root
-    - name: Create log folder
-      file:
-        path: "{{ radicale_config.log }}"
-        state: directory
+  import_tasks: setup-config.yml
 
 - name: Setup Radicale Docker configuration Git
   become: yes
   become_user: root
-  block:
-    - name: Setup bare git
-      git:
-        repo: "{{ radicale_repository }}"
-        dest: "{{ radicale_docker_destination }}"
-        separate_git_dir: "{{ radicale_docker_git_directory }}"
-        force: yes
-    - name: Copy Git post-receive hook
-      template:
-        dest: "{{ radicale_docker_git_directory }}/hooks/post-receive"
-        src: templates/post-receive.j2
-    - name: Set Git ownership
-      file:
-        path: "{{ radicale_docker_git_directory }}"
-        owner: "{{ radicale_docker_git_ownership.owner }}"
-        group: "{{ radicale_docker_git_ownership.group }}"
-        state: directory
-        recurse: yes
+  import_tasks: setup-git.yml
 
-- name: Create Radicale image
-  docker_image:
-    name: "{{ radicale_image_name }}"
-    build:
-      path: "{{ radicale_docker_destination }}"
-      dockerfile: "{{ radicale_dockerfile }}"
-      pull: yes
-    source: build
-    force_source: yes
-    state: present
+- import_tasks: create-docker-image.yml
 
 - name: Create Radicale Docker container
-  block:
-    - name: Create Docker container
-      docker_container:
-        name: "{{ radicale_container_name }}"
-        image: "{{ radicale_image_name }}"
-        ports: "{{ radicale_published_ports }}"
-        capabilities: "{{ radicale_cap_adds }}"
-        cap_drop: "{{ radicale_cap_drops }}"
-        pids_limit: "{{ radicale_pids_limit }}"
-        memory: "{{ radicale_memory }}"
-        healthcheck: "{{ radicale_healthcheck }}"
-        volumes: "{{ radicale_volumes }}"
-        init: yes
-        recreate: yes # TODO: recreate only if image has changed or required
-        restart: yes
-        restart_policy: unless-stopped
-        state: started
-    - name: Symlink inflcoud config.js in Docker container
-      shell: |
-        docker exec "{{ radicale_container_name }}" ln -f -s /config/infcloud/config.js /usr/lib/python3.7/site-packages/radicale_infcloud/web/config.js
+  import_tasks: create-docker-container.yml
