@@ -7,9 +7,15 @@
     force: yes
 
 - name: Copy Git post-receive hook
-  template:
-    dest: "{{ radicale_docker_git_directory }}/hooks/post-receive"
-    src: templates/post-receive.j2
+  block:
+    - name: Render post-receive template
+      template:
+        dest: "{{ radicale_docker_git_directory }}/hooks/post-receive"
+        src: templates/post-receive.j2
+    - name: Set post-receive hook as executable
+      file:
+        path: "{{ radicale_docker_git_directory }}/hooks/post-receive"
+        mode: u=rwx,g=rx,o=rx
 
 - name: Set Git ownership
   file:
