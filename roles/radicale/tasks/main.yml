@@ -32,15 +32,21 @@
       dockerfile: "{{ radicale_dockerfile }}"
     source: build
 
-- name: Create Radicale container
-  vars:
-    recreate_radicale_container: no
-  include: create-container.yml
-
-- name: Recreate Radicale container
-  vars:
-    recreate_radicale_container: yes
-  include: create-container.yml
-  tags:
-    - never
-    - recreate
+- name: Create Radicale Docker container
+  block:
+    - name: Create Docker container
+      docker_container:
+        name: "{{ radicale_container_name }}"
+        image: "{{ radicale_image_name }}"
+        ports: "{{ radicale_published_ports }}"
+        capabilities: "{{ radicale_cap_adds }}"
+        cap_drop: "{{ radicale_cap_drops }}"
+        pids_limit: "{{ radicale_pids_limit }}"
+        memory: "{{ radicale_memory }}"
+        healthcheck: "{{ radicale_healthcheck }}"
+        volumes: "{{ radicale_volumes }}"
+        init: yes
+        recreate: yes # TODO: recreate only if image has changed or required
+        restart: yes
+        restart_policy: unless-stopped
+        state: started
