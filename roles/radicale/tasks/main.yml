@@ -13,9 +13,10 @@
         path: "{{ radicale_config.data }}"
         state: directory
     - name: Copy config folder
+      become: true
       copy:
-        src: files/config/
         dest: "{{ radicale_config.config }}"
+        src: files/config/
         backup: yes
         owner: root
         group: root
