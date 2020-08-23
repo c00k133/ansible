@@ -3,5 +3,3 @@
   include_vars: "{{ item }}"
   with_first_found:
     - "radicale.yml"
-  tags:
-    - always
