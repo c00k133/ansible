@@ -1,0 +1,27 @@
+---
+- name: Load KeeWeb variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - keeweb.yml
+
+- name: Get newest version of KeeWeb and unpack to host directory
+  become: yes
+  become_user: root
+  unarchive:
+    src: "{{ keeweb_archive_source }}"
+    dest: "{{ keeweb_host_destination }}"
+    remote_src: yes
+
+- name: Setup KeeWeb configuration
+  become: true
+  become_user: root
+  block:
+    - name: Copy over KeeWeb configuration file
+      copy:
+        src: files/kw-config.json
+        dest: "{{ keeweb_host_destination }}/{{ keeweb_config_filename }}"
+    - name: Update KeeWeb index.html to use configuration file
+      replace:
+        path: "{{ keeweb_host_destination }}/index.html"
+        regexp: '\(no-config\)'
+        replace: "{{ keeweb_config_filename }}"

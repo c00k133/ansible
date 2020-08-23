@@ -1,0 +1,11 @@
+server_name: pass.neergaard.dev
+server_admin: admin@neergaard.dev
+
+auth_name: KeeWeb
+auth_user_file: /etc/keepass/.htpasswd
+
+document_root: /var/www/pass.neergaard.dev
+
+ssl_certificate_file: /etc/letsencrypt/live/pass.neergaard.dev/fullchain.pem
+ssl_certificate_key_file: /etc/letsencrypt/live/pass.neergaard.dev/privkey.pem
+ssl_include: /etc/letsencrypt/options-ssl-apache.conf

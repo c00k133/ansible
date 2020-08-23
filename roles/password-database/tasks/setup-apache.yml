@@ -1,0 +1,37 @@
+---
+- name: Load Virtual Host variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - apache.yml
+
+- name: Setup Basic authentication secrets
+  become: true
+  become_user: root
+  copy:
+    # TODO: ansible vault
+    src: files/secrets/htpasswd
+    dest: "{{ auth_user_file }}"
+    owner: root
+    group: root
+    mode: u=r,g=r,o=r
+
+- name: Copy over Apache2 configuration
+  become: true
+  become_user: root
+  block:
+    - name: Render Apache2 Virtual Host configuration file to sites-available
+      template:
+        dest: "/etc/apache2/sites-available/{{ server_name }}-le-ssl.conf"
+        src: templates/apache-virtual-host.conf
+    - name: Symlink Apache2 Virtual Host configuration file to sites-enabled
+      file:
+        src: "/etc/apache2/sites-available/{{ server_name }}-le-ssl.conf"
+        dest: "/etc/apache2/sites-enabled/{{ server_name }}-le-ssl.conf"
+        state: link
+
+- name: Restart Apache2 service
+  become: true
+  become_user: root
+  systemd:
+    name: apache2
+    state: restarted

@@ -1,0 +1,22 @@
+{
+    "settings": {
+        "theme": "fb",
+        "autoSave": true,
+        "autoSaveInterval": 15,
+        "canOpenDemo": false,
+        "dropbox": false,
+        "gdrive": false,
+        "onedrive": false,
+        "canExportXML": false,
+        "clipboardSeconds": 15,
+        "enableUsb": false
+    },
+    "files": [
+        {
+            "storage": "webdav",
+            "name": "PWDB",
+            "path": "/webdav/PWDB.kdbx",
+            "webdavSaveMethod": "move"
+        }
+    ]
+}

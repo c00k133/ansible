@@ -1,0 +1,6 @@
+---
+- name: Install KeeWeb
+  import_tasks: install-keeweb.yml
+
+- name: Setup Apache2 VirtualHost
+  import_tasks: setup-apache.yml

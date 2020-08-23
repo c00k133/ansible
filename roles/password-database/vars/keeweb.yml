@@ -1,0 +1,3 @@
+keeweb_archive_source: https://github.com/keeweb/keeweb/archive/gh-pages.zip
+keeweb_host_destination: /var/www/pass.neergaard.dev/keeweb
+keeweb_config_filename: kw-config.js
