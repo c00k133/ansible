@@ -1,0 +1,23 @@
+---
+- name: Load cron variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - cron.yml
+
+- name: Create backup directory
+  become: true
+  become_user: root
+  file:
+    path: "{{ password_database_backup_directory }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Setup backup cronjob
+  become: true
+  become_user: root
+  template:
+    dest: /etc/cron.daily/password-database-backup
+    src: templates/password-database-backup
+    mode: 755

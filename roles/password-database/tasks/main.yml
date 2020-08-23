@@ -4,3 +4,6 @@
 
 - name: Setup Apache2 VirtualHost
   import_tasks: setup-apache.yml
+
+- name: Setup backup cron job
+  import_tasks: setup-cronjob.yml

@@ -1,0 +1,3 @@
+password_database_backup_directory: /pwdbbackup/
+password_database_dump_prefix: pwdb_dump_
+password_database_location: /var/www/pass.neergaard.dev/webdav/PWDB.kdbx
