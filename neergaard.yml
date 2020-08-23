@@ -5,3 +5,11 @@
   tags:
     - service
     - radicale
+
+- hosts: neergaard.dev
+  roles:
+    - password-database
+  tags:
+    - service
+    - password-database
+    - pass
