@@ -1,0 +1,26 @@
+---
+- name: Setup bare git
+  git:
+    repo: "{{ git_repository }}"
+    dest: "{{ git_destination }}"
+    separate_git_dir: "{{ git_directory }}"
+    force: yes
+
+- name: Copy Git post-receive hook
+  block:
+    - name: Render post-receive template
+      template:
+        dest: "{{ git_directory }}/hooks/post-receive"
+        src: templates/post-receive.j2
+    - name: Set post-receive hook as executable
+      file:
+        path: "{{ git_directory }}/hooks/post-receive"
+        mode: u=rwx,g=rx,o=rx
+
+- name: Set Git ownership
+  file:
+    path: "{{ git_directory }}"
+    owner: "{{ git_directory_owner }}"
+    group: "{{ git_directory_group }}"
+    state: directory
+    recurse: yes

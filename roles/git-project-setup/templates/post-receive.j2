@@ -1,13 +1,15 @@
 #!/bin/bash
 
-TARGET="{{ radicale_docker_destination }}"
-GIT_DIR="{{ radicale_docker_git_directory }}"
+TARGET="{{ git_destination }}"
+GIT_DIR="{{ git_directory }}"
 BRANCH="master"
 
 while read oldrev newrev ref; do
     if [[ $ref = refs/heads/$BRANCH ]]; then
         echo "Ref $ref received. Deploying $BRANCH branch to production..."
         git --work-tree=$TARGET --git-dir=$GIT_DIR checkout -f
+
+        {{ git_setup | default(omit) }}
     else
         echo "Ref $ref received. Doing nothing: only the $BRANCH branch may be deployed to this server."
     fi

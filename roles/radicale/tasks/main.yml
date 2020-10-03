@@ -4,10 +4,18 @@
 - name: Setup Radicale configuration
   import_tasks: setup-config.yml
 
-- name: Setup Radicale Docker configuration Git
-  become: yes
+- become: yes
   become_user: root
-  import_tasks: setup-git.yml
+  block:
+    - name: Setup Radicale Docker configuration Git
+      include_role:
+        name: git-project-setup
+      vars:
+        git_repository: "{{ radicale_repository }}"
+        git_destination: "{{ radicale_docker_destination }}"
+        git_directory: "{{ radicale_docker_git_directory }}"
+        git_directory_owner: "{{ radicale_docker_git_ownership.owner }}"
+        git_directory_group: "{{ radicale_docker_git_ownership.group }}"
 
 - import_tasks: create-docker-image.yml
 
