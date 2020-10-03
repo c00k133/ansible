@@ -1,15 +1,15 @@
-> Why configure stuff on my server once and instantly forget what I did?
+> Why configure stuff on my server once, and instantly forget what I did?
 
-That was the mantra I went under when fixing around on my own private server.
+That was the mantra I went under when playing around on my own private server.
 I fixed stuff, but didn't put down the time to write about what I did (let's be honest, documentation is not always fun).
-This when I stumbled upon Ansible I got pretty excited: configure my server without having to configure something for the configuration system itself?
+This is when I stumbled upon [Ansible](https://www.ansible.com/) I got pretty excited: configure my server without having to configure something for the configuration system itself?
 Sign me up.
 
 ---
 
 With this repository I aim to write down my configuration patterns that I use for my server.
-Every time I configure something new on it I shall update this repository such that I can (preferably) idempotently run the same setup procesa again and again.
-Not everything that I've configured and fixed this far is in here (nor might they ever show up here), but I aim to as diligently as possible update this repository.
+Every time I configure something new on it I shall update this repository such that I can (preferably) idempotently run the same setup process again and again.
+Not everything that I've configured and fixed this far is in here (nor might they ever show up here), but I aim to, as diligently as possible, update this repository.
 
 #### Goals:
 
