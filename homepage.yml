@@ -1,0 +1,43 @@
+---
+- hosts: neergaard.dev
+  vars:
+    homepage_repository: https://github.com/c00k133/neergaard.fi.git
+    homepage_destination: /opt/homepage
+    homepage_git_directory: /srv/git/homepage.git
+    homepage_git_owner_and_group: deploy
+    homepage_build_destination: /var/www/homepage
+    homepage_image_name: homepage-builder
+
+  tasks:
+    - become: yes
+      become_user: root
+      block:
+        - name: Setup Homepage Docker configuration Git
+          include_role:
+            name: git-project-setup
+          vars:
+            git_repository: "{{ homepage_repository }}"
+            git_destination: "{{ homepage_destination }}"
+            git_directory: "{{ homepage_git_directory }}"
+            git_directory_owner: "{{ homepage_git_owner_and_group }}"
+            git_directory_group: "{{ homepage_git_owner_and_group }}"
+
+    - name: Create Homepage image
+      docker_image:
+        name: "{{ homepage_image_name }}"
+        build:
+          path: "{{ homepage_destination }}"
+          dockerfile: Dockerfile
+          pull: yes
+        source: build
+        state: present
+
+    - name: Build homepage in Docker container
+      docker_container:
+        name: homepage-builder
+        image: "{{ homepage_image_name }}"
+        command: "make --directory=/src build/index.html"
+        state: absent
+        volumes:
+          - "{{ homepage_destination }}:/src"
+          - "{{ homepage_build_destination }}:/src/build"
