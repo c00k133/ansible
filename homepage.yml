@@ -1,5 +1,5 @@
 ---
-- hosts: neergaard.dev
+- hosts: main
   vars:
     homepage_repository: https://github.com/c00k133/neergaard.fi.git
     homepage_destination: /opt/homepage
