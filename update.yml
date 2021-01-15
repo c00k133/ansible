@@ -1,6 +1,6 @@
 ---
 # https://www.cyberciti.biz/faq/ansible-apt-update-all-packages-on-ubuntu-debian-linux/
-- hosts: all
+- hosts: servers
   become: true
   become_user: root
   tasks:
