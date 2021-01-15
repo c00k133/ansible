@@ -3,3 +3,12 @@ host_vars/
 hosts
 *.swp
 vault-passphrase.gpg
+
+
+## https://raw.githubusercontent.com/github/gitignore/master/Global/Vagrant.gitignore
+
+# General
+.vagrant/
+
+# Log files (if you are creating logs in debug mode, uncomment this)
+*.log
