@@ -2,3 +2,4 @@ ansible.cfg
 host_vars/
 hosts
 *.swp
+vault-passphrase.gpg
