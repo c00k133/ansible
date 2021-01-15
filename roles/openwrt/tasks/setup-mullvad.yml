@@ -1,0 +1,22 @@
+---
+- import_tasks: generate-wireguard-key-pair.yml
+  when: wireguard_support_enabled
+  failed_when: wireguard_public_key is undefined or wireguard_private_key is undefined
+
+- name: Load Mullvad variables
+  include_vars:
+    file: mullvad.yml
+    name: mullvad
+
+- name: GET Mullvad IP locally
+  local_action: >
+    shell curl https://api.mullvad.net/wg/
+    -d account="{{ mullvad.account_number }}"
+    --data-urlencode pubkey="{{ wireguard_public_key }}"
+  register: mullvad.ip
+  when: mullvad.ip is undefined
+
+- name: Copy over Mullvad specific configuration to /etc/config
+  import_tasks: copy-over-configs.yml
+  vars:
+    config_folder: mullvad-config

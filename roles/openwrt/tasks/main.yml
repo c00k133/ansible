@@ -1,0 +1,15 @@
+---
+- import_tasks: backup-etc.yml
+  vars:
+    #backup_filename: "{{ ansible_date_time.iso8601 }}"
+    backup_filename: temporary-solution
+  when: backup_enabled
+
+- import_tasks: install-packages.yml
+
+- import_tasks: setup-config.yml
+
+- import_tasks: setup-adblock.yml
+
+- import_tasks: setup-mullvad.yml
+  when: mullvad_support_enabled

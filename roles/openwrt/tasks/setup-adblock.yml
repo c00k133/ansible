@@ -1,0 +1,22 @@
+---
+- import_tasks: opkg-update.yml
+
+- name: Include AdBlock variables
+  include_vars:
+    file: adblock.yml
+    name: adblock
+
+- name: Install AdBlock packages
+  import_tasks: opkg-install.yml
+  vars:
+    packages: "{{ adblock.packages }}"
+  # Package dependencies are not playing nicely...
+  ignore_unreachable: yes
+
+- name: Copy over AdBlock configuration to /etc/config
+  import_tasks: copy-over-configs.yml
+  vars:
+    config_folder: adblock
+
+- name: Restart AdBlock service
+  raw: /etc/init.d/adblock restart

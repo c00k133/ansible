@@ -1,0 +1,6 @@
+---
+- local_action: >
+    shell scp
+    -P "{{ ansible_port }}"
+    -r "{{ role_path }}"/files/"{{ config_folder }}"/*
+    "{{ ansible_user }}"@"{{ ansible_host }}":/etc/config

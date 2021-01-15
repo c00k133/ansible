@@ -1,0 +1,5 @@
+---
+- name: Perform opkg update
+  raw: opkg update
+  register: opkg_update_done
+  when: opkg_update_done is undefined

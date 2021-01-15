@@ -1,0 +1,13 @@
+---
+- name: Create temporary compression /etc
+  raw: tar -czf /tmp/"{{ backup_filename }}".tar.gz /etc
+
+- name: Backup OpenWRT /etc folder
+  local_action: >
+    shell scp
+    -P "{{ ansible_port }}"
+    "{{ ansible_user }}"@"{{ ansible_host }}":/tmp/"{{ backup_filename }}".tar.gz
+    "{{ backup_dir }}"/"{{ backup_filename }}"
+
+- name: Remove temporary compression
+  raw: rm /tmp/"{{ backup_filename }}".tar.gz

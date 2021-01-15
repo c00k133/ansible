@@ -1,0 +1,12 @@
+---
+- import_tasks: opkg-update.yml
+
+- name: Include packages variables
+  include_vars:
+    file: packages.yml
+    name: common
+
+- name: Install common packages
+  import_tasks: opkg-install.yml
+  vars:
+    packages: "{{ common.packages }}"

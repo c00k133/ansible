@@ -1,0 +1,5 @@
+---
+- name: Copy over configuration to /etc/config
+  import_tasks: copy-over-configs.yml
+  vars:
+    config_folder: config

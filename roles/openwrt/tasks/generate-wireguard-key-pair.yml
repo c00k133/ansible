@@ -1,0 +1,15 @@
+---
+- name: Load WireGuard key-pair
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "wireguard.yml"
+
+- name: Generate WireGuard private key
+  raw: wg genkey
+  register: wireguard_private_key
+  when: wireguard_private_key is undefined
+
+- name: Generate WireGuard public key
+  raw: echo "{{ wireguard_private_key }}" | wg pubkey
+  register: wireguard_public_key
+  when: wireguard_public_key is undefined

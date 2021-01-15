@@ -1,0 +1,6 @@
+---
+- import_tasks: opkg-update.yml
+
+- name: Install opkg packages
+  raw: opkg install "{{ item }}"
+  loop: "{{ packages }}"
