@@ -21,4 +21,4 @@ Not everything that I've configured and fixed this far is in here (nor might the
 
 #### TODO:
 
-- [ ] Vagrant for testing purposes: [youtube.com/watch?v=goclfp6a2IQ&t=2016s](https://www.youtube.com/watch?v=goclfp6a2IQ&t=2016s)
+- [x] Vagrant for testing purposes: [youtube.com/watch?v=goclfp6a2IQ&t=2016s](https://www.youtube.com/watch?v=goclfp6a2IQ&t=2016s)
