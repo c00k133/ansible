@@ -1,0 +1,14 @@
+---
+- hosts: main
+  become: yes
+
+  tasks:
+    - name: Install UFW
+      apt:
+        name: ufw
+        state: present
+
+    - name: Deny everything and enable UFW
+      community.general.ufw:
+        state: enabled
+        policy: deny
