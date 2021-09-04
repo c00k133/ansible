@@ -1,0 +1,25 @@
+---
+# Docker image is from linuxserver.io
+# - https://docs.linuxserver.io/images/docker-syncthing
+- name: Setup docker container
+  community.docker.docker_container:
+    name: syncthing
+    image: "{{ syncthing_image }}"
+    state: started
+    ports:
+      - "8384:8384"
+      - "22000:22000/tcp"
+      - "22000:22000/udp"
+      - "21027:21027/udp"
+    volumes: "{{ syncthing_volumes }}"
+    env:
+      PUID: "{{ syncthing_uid }}"
+      PGID: "{{ syncthing_gid }}"
+      TZ: "{{ syncthing_tz }}"
+  tags: setup
+
+- name: Open UFW ports for Syncthing
+  import_tasks: open-ufw-ports.yml
+  tags:
+    - networking
+    - ufw

@@ -1,0 +1,6 @@
+---
+- hosts: main
+  roles:
+    - role: syncthing
+      tags: syncthing
+    # TODO: include Apache role
