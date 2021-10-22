@@ -1,17 +1,21 @@
 ---
 - hosts: main
 
+  roles:
+    - geerlingguy.pip
+
   tasks:
     - name: Install Python 3.x
       apt:
         name: python3
         state: present
 
-    - name: Install Pip
-      apt:
-        name: pip3
-        state: present
-
-    - name: Install Docker
+    - name: Install docker
       pip:
+        executable: pip3
         name: docker
+
+    - name: Install requests
+      pip:
+        executable: pip3
+        name: requests
