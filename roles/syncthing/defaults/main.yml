@@ -5,6 +5,6 @@ syncthing_volumes:
   - /var/opt/syncthing/data1:/data1
   - /var/opt/syncthing/data2:/data2
 
-syncthing_uid: 1000
-syncthing_gid: 1000
-syncthing_tz: Europe/Helsinki
+syncthing_uid: "1000"
+syncthing_gid: "1000"
+syncthing_tz: "Europe/Helsinki"

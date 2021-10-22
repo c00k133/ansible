@@ -6,6 +6,8 @@
     name: syncthing
     image: "{{ syncthing_image }}"
     state: started
+    recreate: no
+    restart: no
     ports:
       - "8384:8384"
       - "22000:22000/tcp"
@@ -19,6 +21,7 @@
   tags: setup
 
 - name: Open UFW ports for Syncthing
+  become: true
   import_tasks: open-ufw-ports.yml
   tags:
     - networking

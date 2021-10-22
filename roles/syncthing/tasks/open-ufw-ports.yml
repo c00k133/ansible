@@ -1,7 +1,7 @@
 ---
 - name: Port for Syncthing web UI
   community.general.ufw:
-    rule: allow
+    rule: deny
     port: '8384'
 
 - community.general.ufw:
