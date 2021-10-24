@@ -20,6 +20,12 @@
       TZ: "{{ syncthing_tz }}"
   tags: setup
 
+- name: Fetch Syncthing configuration file
+  fetch:
+    src: "{{ syncthing_config_dir }}/config.xml"
+    dest: "{{ role_path }}/files/secrets"
+  when: False
+
 # Default is root:root
 - name: Set Syncthing data folder permissions
   become: true
