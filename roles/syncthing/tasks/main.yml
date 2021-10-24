@@ -20,6 +20,17 @@
       TZ: "{{ syncthing_tz }}"
   tags: setup
 
+# Default is root:root
+- name: Set Syncthing data folder permissions
+  become: true
+  file:
+    path: "{{ syncthing_data_dir_root }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: docker
+    recurse: yes
+    mode: '0700'
+
 - name: Open UFW ports for Syncthing
   become: true
   import_tasks: open-ufw-ports.yml

@@ -1,9 +1,10 @@
 ---
 syncthing_image: ghcr.io/linuxserver/syncthing
+syncthing_data_dir_root: /var/opt/syncthing
 syncthing_volumes:
   - /etc/syncthing:/config
-  - /var/opt/syncthing/data1:/data1
-  - /var/opt/syncthing/data2:/data2
+  - "{{ syncthing_data_dir_root }}/data1:/data1"
+  - "{{ syncthing_data_dir_root }}/data2:/data2"
 
 syncthing_uid: "1000"
 syncthing_gid: "1000"
