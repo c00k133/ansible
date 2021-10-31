@@ -56,6 +56,7 @@
       shell: "echo '{{ neuron_data.container.Output }}' | {{ dg_dir }}/normalize-neuron.py {{ dg_neuron_dir }} {{ dg_dir }}/content/posts/"
 
     - name: Build static site with Hugo
+      become: yes
       command: "hugo --source {{ dg_dir }} --destination {{ dg_site_build_dir }}"
 
     - name: Change ownership of site directory
