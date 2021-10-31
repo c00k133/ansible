@@ -1,0 +1,66 @@
+---
+- hosts: main
+  become: yes
+  vars:
+    dg_dir: /opt/digital-garden
+    dg_neuron_dir: /var/opt/syncthing/data1/Notes/neuron
+    dg_neuron_container_name: neuron
+    dg_neuron_container_mount: /notes
+    dg_site_build_dir: /var/www/digital-garden
+
+  roles:
+    - darkwizard242.hugo
+
+  tasks:
+    - become: yes
+      block:
+        - name: Setup digital garden Git
+          include_role:
+            name: git-project-setup
+          vars:
+            git_repository: "https://github.com/c00k133/digital-garden"
+            git_destination: "{{ dg_dir }}"
+            git_directory: "/srv/git/digital-garden.git"
+            git_directory_owner: deploy
+            git_directory_group: deploy
+
+    - name: Install Python packages from project requirements.txt
+      pip:
+        executable: pip3
+        requirements: "{{ dg_dir }}/requirements.txt"
+
+    # For some reason docker disappeared after the above task
+    - name: Install docker Python package
+      pip:
+        executable: pip3
+        name: docker
+
+    - name: Install requests Python package
+      pip:
+        executable: pip3
+        name: requests
+
+    - name: Query notes with Neuron docker container
+      community.docker.docker_container:
+        name: "{{ dg_neuron_container_name }}"
+        image: sridca/neuron
+        state: started
+        command: "sh -c 'neuron -d {{ dg_neuron_container_mount }} query --tag digital-garden 2>/dev/null'"
+        detach: no
+        cleanup: yes
+        volumes:
+          - "{{ dg_neuron_dir }}:{{ dg_neuron_container_mount }}"
+      register: neuron_data
+
+    - name: Normalize Neuron notes tagged with digital-garden
+      shell: "echo '{{ neuron_data.container.Output }}' | {{ dg_dir }}/normalize-neuron.py {{ dg_neuron_dir }} {{ dg_dir }}/content/posts/"
+
+    - name: Build static site with Hugo
+      command: "hugo --source {{ dg_dir }} --destination {{ dg_site_build_dir }}"
+
+    - name: Change ownership of site directory
+      file:
+        path: "{{ dg_site_build_dir }}"
+        owner: deploy
+        group: deploy
+        recurse: yes
