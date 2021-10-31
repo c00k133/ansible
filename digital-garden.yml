@@ -40,6 +40,15 @@
         executable: pip3
         name: requests
 
+    - name: Remove old posts
+      file:
+        state: "{{ item }}"
+        path: "{{ dg_dir }}/content/posts/"
+      with_items:
+        - absent
+        - directory
+      when: False
+
     - name: Query notes with Neuron docker container
       community.docker.docker_container:
         name: "{{ dg_neuron_container_name }}"
