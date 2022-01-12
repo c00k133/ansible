@@ -21,4 +21,7 @@ Not everything that I've configured and fixed this far is in here (nor might the
 
 #### TODO:
 
+- [ ] Create role for `httpd`.
+- [ ] Create playbook for server user management.
+- [ ] Integrate [Terraform with Ansible](https://www.digitalocean.com/community/tutorials/how-to-use-ansible-with-terraform-for-configuration-management).
 - [x] Vagrant for testing purposes: [youtube.com/watch?v=goclfp6a2IQ&t=2016s](https://www.youtube.com/watch?v=goclfp6a2IQ&t=2016s)
