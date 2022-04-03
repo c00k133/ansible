@@ -8,6 +8,7 @@
     state: started
     recreate: no
     restart: no
+    restart_policy: unless-stopped
     volumes:
       - "{{ calibre_data }}:/config"
     env: "{{ calibre_env }}"

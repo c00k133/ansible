@@ -6,6 +6,7 @@
     state: started
     recreate: no
     restart: no
+    restart_policy: unless-stopped
     ports:
       - "{{ wallabag_port }}:80"
     volumes:
