@@ -1,0 +1,7 @@
+---
+- hosts: main
+  become: yes
+  roles:
+    - role: calibre
+      tags: calibre
+    # TODO: include Apache role

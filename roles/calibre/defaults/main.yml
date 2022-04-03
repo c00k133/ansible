@@ -1,0 +1,10 @@
+---
+calibre_data: "/opt/calibre/"
+calibre_env:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: Europe/Helsinki
+  PASSWORD: "{{ lookup('file', 'files/secrets/calibre-password') }}"
+  #CLI_ARGS:
+calibre_desktop_gui_port: "5767"
+calibre_web_gui_port: "5768"

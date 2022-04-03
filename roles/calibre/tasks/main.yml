@@ -1,0 +1,35 @@
+---
+# Docker container source:
+# - https://github.com/linuxserver/docker-calibre
+- name: Setup docker container
+  community.docker.docker_container:
+    name: calibre-server
+    image:  lscr.io/linuxserver/calibre
+    state: started
+    recreate: no
+    restart: no
+    volumes:
+      - "{{ calibre_data }}:/config"
+    env: "{{ calibre_env }}"
+    ports:
+      - "{{ calibre_desktop_gui_port }}:8080"
+      - "{{ calibre_web_gui_port }}:8081"
+  tags: setup
+
+- include_tasks: template-apache2.yml
+  loop:
+    - desk
+    - web
+  loop_control:
+    loop_var: calibre_version
+  tags:
+    - apache
+
+# Would have used a handler, but it's disallowed on include_tasks
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+
+- ansible.builtin.debug:
+    msg: Remember to manually check SSL configuration with certbot!

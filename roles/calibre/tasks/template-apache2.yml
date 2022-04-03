@@ -1,0 +1,14 @@
+---
+# NOTE: The Apache configuration on the server may differ.
+#       When certificates are created with certbot, it is automatically altered to use the correct certificates.
+- name: Enable the Apache HTTP server for Calibre "{{ calibre_version }}" version
+  template:
+    src: "etc_apache2_sites-available_calibre-{{ calibre_version }}.j2"
+    dest: "/etc/apache2/sites-available/calibre-{{ calibre_version }}.neergaard.dev.conf"
+    owner: root
+    group: root
+
+- name: Enable the Calibre "{{ calibre_version }}" site
+  ansible.builtin.command:
+    cmd: "a2ensite calibre-{{ calibre_version }}.neergaard.dev.conf"
+    creates: "/etc/apache2/sites-enabled/calibre-{{ calibre_version }}.neergaard.dev.conf"
