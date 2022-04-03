@@ -4,4 +4,3 @@
   roles:
     - role: calibre
       tags: calibre
-    # TODO: include Apache role
