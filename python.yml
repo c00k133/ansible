@@ -10,12 +10,10 @@
         name: python3
         state: present
 
-    - name: Install docker
+    - name: Install packages
       pip:
         executable: pip3
-        name: docker
-
-    - name: Install requests
-      pip:
-        executable: pip3
-        name: requests
+        name: "{{ item }}"
+      loop:
+        - docker
+        - requests
