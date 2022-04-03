@@ -1,0 +1,33 @@
+---
+- name: Setup docker container
+  community.docker.docker_container:
+    name: nextcloud
+    image: "{{ nextcloud_image }}"
+    state: started
+    recreate: no
+    restart: no
+    restart_policy: unless-stopped
+    ports:
+      - "{{ nextcloud_port }}:80"
+    volumes:
+      - "{{ nextcloud_data_volume }}:/var/www/html"
+    env: "{{ nextcloud_env }}"
+  tags: setup
+
+- name: Enable the Apache HTTP server for Nextcloud
+  become: yes
+  template:
+    src: "etc_apache2_sites-available_nextcloud.j2"
+    dest: "/etc/apache2/sites-available/nextcloud.neergaard.dev.conf"
+    owner: root
+    group: root
+
+- name: Enable the Nextcloud site
+  become: yes
+  ansible.builtin.command:
+    cmd: "a2ensite nextcloud.neergaard.dev.conf"
+    creates: "/etc/apache2/sites-enabled/nextcloud.neergaard.dev.conf"
+  notify: restart apache
+
+- ansible.builtin.debug:
+    msg: Remember to manually check SSL configuration with certbot!

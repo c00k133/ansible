@@ -1,0 +1,34 @@
+<VirtualHost *:80>
+    ServerName nextcloud.neergaard.dev
+
+    ServerAdmin admin@neergaard.dev
+
+    ErrorLog /var/log/apache2/domains/nextcloud.neergaard.dev-error.log
+    CustomLog /var/log/apache2/domains/nextcloud.neergaard.dev-access.log combined
+
+	RewriteEngine on
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName nextcloud.neergaard.dev
+
+    ServerAdmin admin@neergaard.dev
+
+    ErrorLog /var/log/apache2/domains/nextcloud.neergaard.dev-error.log
+    CustomLog /var/log/apache2/domains/nextcloud.neergaard.dev-access.log combined
+
+    ProxyPass / http://127.0.0.1:{{ nextcloud_port }}/
+    <Location />
+        ProxyPassReverse /
+    </Location>
+
+	RewriteEngine on
+
+    SSLCertificateFile /etc/letsencrypt/live/nextcloud.neergaard.dev/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/nextcloud.neergaard.dev/privkey.pem
+    Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>
+</IfModule>
