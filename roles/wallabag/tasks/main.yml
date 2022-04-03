@@ -1,0 +1,31 @@
+---
+- name: Setup docker container
+  community.docker.docker_container:
+    name: wallabag
+    image: "{{ wallabag_image }}"
+    state: started
+    recreate: no
+    restart: no
+    ports:
+      - "{{ wallabag_port }}:80"
+    volumes:
+      - "{{ wallabag_data_volume }}:/var/www/wallabag/data"
+      - "{{ wallabag_images_volume }}:/var/www/wallabag/web/assets/images"
+    env: "{{ wallabag_env }}"
+  tags: setup
+
+- name: Enable the Apache HTTP server for Wallabag
+  template:
+    src: "etc_apache2_sites-available_wallabag.j2"
+    dest: "/etc/apache2/sites-available/wallabag.neergaard.dev.conf"
+    owner: root
+    group: root
+
+- name: Enable the Wallabag site
+  ansible.builtin.command:
+    cmd: "a2ensite wallabag.neergaard.dev.conf"
+    creates: "/etc/apache2/sites-enabled/wallabag.neergaard.dev.conf"
+  notify: restart apache
+
+- ansible.builtin.debug:
+    msg: Remember to manually check SSL configuration with certbot!

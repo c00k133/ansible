@@ -1,0 +1,7 @@
+---
+wallabag_image: wallabag/wallabag
+wallabag_port: "7685"
+wallabag_data_volume: /opt/wallabag/data
+wallabag_images_volume: /opt/wallabag/images
+wallabag_env:
+  SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.neergaard.dev"

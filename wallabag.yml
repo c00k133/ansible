@@ -1,0 +1,7 @@
+---
+- hosts: main
+  become: yes
+  roles:
+    - role: wallabag
+      tags: wallabag
+    # TODO: include Apache role
